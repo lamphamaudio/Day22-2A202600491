@@ -1,6 +1,6 @@
 # Reflection — Lab 22 (DPO/ORPO Alignment)
 
-**Tên:** Lam Pham
+**Tên:** Phạm Thanh Lam
 **Cohort:** AI20k
 **Tier đã chạy:** T4
 **Date:** 2026-05-08
