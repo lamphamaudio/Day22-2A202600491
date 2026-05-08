@@ -1,0 +1,18 @@
+{
+  "ifeval": {
+    "sft": null,
+    "dpo": null
+  },
+  "gsm8k": {
+    "sft": null,
+    "dpo": null
+  },
+  "mmlu": {
+    "sft": null,
+    "dpo": null
+  },
+  "alpaca_eval": {
+    "sft": null,
+    "dpo": null
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "overall": {
+    "sft_wins": 0,
+    "dpo_wins": 5,
+    "ties": 3
+  },
+  "metadata": {
+    "judge": "manual"
+  }
+}
