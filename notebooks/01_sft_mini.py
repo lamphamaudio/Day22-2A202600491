@@ -41,7 +41,7 @@ else:  # BIGGPU
     PER_DEVICE_BATCH = 2
     GRAD_ACCUM = 4
 
-SFT_DATASET = os.environ.get("SFT_DATASET", "5CD-AI/Vietnamese-alpaca-cleaned")
+SFT_DATASET = os.environ.get("SFT_DATASET", "5CD-AI/Vietnamese-alpaca-gpt4-gg-translated")
 SFT_SLICE = 1000
 NUM_EPOCHS = 1
 
@@ -85,6 +85,14 @@ if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
     print("Set tokenizer.pad_token = eos_token")
 
+# Add ChatML template for Qwen2.5 (fixes "ValueError: tokenizer.chat_template is not set")
+from unsloth.chat_templates import get_chat_template
+tokenizer = get_chat_template(
+    tokenizer,
+    chat_template="qwen-2.5",
+)
+print("Applied qwen-2.5 chat template")
+
 # %%
 model = FastLanguageModel.get_peft_model(
     model,
@@ -106,7 +114,7 @@ print(f"Trainable params: {sum(p.numel() for p in model.parameters() if p.requir
 # %% [markdown]
 # ## 2. Load + format VN Alpaca slice
 #
-# `5CD-AI/Vietnamese-alpaca-cleaned` is a 50k-row VN Alpaca translation. Lab 21
+# `5CD-AI/Vietnamese-alpaca-gpt4-gg-translated` is a 50k-row VN Alpaca translation. Lab 21
 # uses 1k slice for the demo run; we match that exactly so reward gap is comparable.
 
 # %%
@@ -120,13 +128,22 @@ print(f"\nFirst row:\n{ds[0]}")
 # Alpaca → ChatML format (Qwen2.5's native template)
 def format_alpaca_to_chat(row):
     messages = []
-    if row.get("instruction"):
-        prompt = row["instruction"]
-        if row.get("input"):
-            prompt += "\n\n" + row["input"]
+    # Support both original names and _vi suffixes from the new dataset
+    instruction = row.get("instruction_vi") or row.get("instruction")
+    input_text = row.get("input_vi") or row.get("input")
+    output = row.get("output_vi") or row.get("output")
+
+    if instruction:
+        prompt = instruction
+        if input_text:
+            prompt += "\n\n" + input_text
         messages.append({"role": "user", "content": prompt})
-    if row.get("output"):
-        messages.append({"role": "assistant", "content": row["output"]})
+    if output:
+        messages.append({"role": "assistant", "content": output})
+
+    if not messages:
+        return {"text": ""}
+
     text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False)
     return {"text": text}
 
