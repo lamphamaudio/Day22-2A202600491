@@ -39,7 +39,7 @@
 
 ## 3. Reward curves analysis (≥ 100 words)
 
-![03_dpo_reward_curves.png](file:///d:/AiGit/day22/Day22-Track3-DPO-Alignment-Lab/submission/screenshots/03_dpo_reward_curves.png)
+![03_dpo_reward_curves.png](screenshots/03_dpo_reward_curves.png)
 
 Dựa trên biểu đồ phần thưởng thu được từ quá trình huấn luyện DPO, chúng ta có thể thấy một hiện tượng "likelihood displacement" (deck §3.4) rất rõ rệt. Trong khoảng 50-100 bước đầu tiên, cả `chosen_rewards` và `rejected_rewards` đều biến động nhẹ quanh mức 0. Tuy nhiên, sau đó khoảng cách (reward gap) bắt đầu giãn rộng ra một cách ổn định. Điểm đáng chú ý là trong khi `chosen_rewards` tăng dần lên mức khoảng -0.7, thì `rejected_rewards` lại giảm mạnh xuống mức -1.0. Điều này cho thấy mô hình đang học cách đẩy xác suất của các câu trả lời bị từ chối xuống thấp hơn (displacing likelihood) thay vì chỉ đơn thuần tăng xác suất của câu trả lời được chọn.
 
@@ -49,7 +49,7 @@ Khoảng cách phần thưởng cuối cùng đạt mức +0.314, chứng tỏ q
 
 ## 4. Qualitative comparison (≥ 8 examples)
 
-![04-side-by-side-table.png](file:///d:/AiGit/day22/Day22-Track3-DPO-Alignment-Lab/submission/screenshots/04-side-by-side-table.png)
+![04-side-by-side-table.png](screenshots/04-side-by-side-table.png)
 
 | # | Prompt category | Prompt (truncated) | SFT-only | SFT+DPO | Winner |
 |---|---|---|---|---|---|
@@ -89,7 +89,7 @@ Sự thay đổi này không chỉ giúp pipeline chạy thông suốt mà còn 
 
 ## 7. Benchmark interpretation (≥ 150 words)
 
-![07-benchmark-comparison.png](file:///d:/AiGit/day22/Day22-Track3-DPO-Alignment-Lab/submission/screenshots/07-benchmark-comparison.png)
+![07-benchmark-comparison.png](screenshots/07-benchmark-comparison.png)
 
 Score table from `data/eval/benchmark_results.json`:
 
